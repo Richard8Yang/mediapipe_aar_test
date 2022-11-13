@@ -28,7 +28,7 @@
             android:value="false" />
         <meta-data
             android:name="binaryGraphName"
-            android:value="holistic_tracking_gpu.binarypb" />
+            android:value="holistic_tracking_gpu_full.binarypb" />
         <meta-data
             android:name="inputVideoStreamName"
             android:value="input_video" />

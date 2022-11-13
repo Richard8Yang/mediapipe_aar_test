@@ -18,7 +18,13 @@ import com.google.mediapipe.components.ExternalTextureConverter;
 import com.google.mediapipe.components.FrameProcessor;
 import com.google.mediapipe.components.PermissionHelper;
 import com.google.mediapipe.framework.AndroidAssetUtil;
+import com.google.mediapipe.framework.Packet;
+//import com.google.mediapipe.framework.PacketGetter;
 import com.google.mediapipe.glutil.EglManager;
+import com.google.mediapipe.framework.AndroidPacketCreator;
+
+import java.util.Map;
+import java.util.HashMap;
 
 public class holistic_activity extends AppCompatActivity {
 
@@ -95,6 +101,37 @@ public class holistic_activity extends AppCompatActivity {
                 .getVideoSurfaceOutput()
                 .setFlipY(
                         applicationInfo.metaData.getBoolean("flipFramesVertically", FLIP_FRAMES_VERTICALLY));
+
+        Map<String, Packet> inputSidePackets = new HashMap<>();
+        inputSidePackets.put("enable_segmentation", processor.getPacketCreator().createBool(false));
+        inputSidePackets.put("refine_face_landmarks", processor.getPacketCreator().createBool(true));
+        processor.setInputSidePackets(inputSidePackets);
+
+        // For each output landmark stream we must assign corresponding callback
+        // Refer to the link for available streams: https://github.com/google/mediapipe/blob/master/mediapipe/graphs/holistic_tracking/holistic_tracking_gpu.pbtxt
+        /*processor.addPacketCallback(
+                "pose_landmarks",
+                (packet) -> {
+                    byte[] landmarksRaw = PacketGetter.getProtoBytes(packet);
+                    try {
+                        NormalizedLandmarkList landmarks = NormalizedLandmarkList.parseFrom(landmarksRaw);
+                        if (landmarks == null) {
+                            Log.d(TAG, "[TS:" + packet.getTimestamp() + "] No hand landmarks.");
+                            return;
+                        }
+                        // Note: If hand_presence is false, these landmarks are useless.
+                        Log.d(
+                                TAG,
+                                "[TS:"
+                                        + packet.getTimestamp()
+                                        + "] #Landmarks for hand: "
+                                        + landmarks.getLandmarkCount());
+                        Log.d(TAG, getLandmarksDebugString(landmarks));
+                    } catch (InvalidProtocolBufferException e) {
+                        Log.e(TAG, "Couldn't Exception received - " + e);
+                        return;
+                    }
+                });*/
 
         PermissionHelper.checkAndRequestCameraPermissions(this);
     }

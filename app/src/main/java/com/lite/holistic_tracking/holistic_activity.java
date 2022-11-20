@@ -105,6 +105,7 @@ public class holistic_activity extends AppCompatActivity {
         Map<String, Packet> inputSidePackets = new HashMap<>();
         inputSidePackets.put("enable_segmentation", processor.getPacketCreator().createBool(false));
         inputSidePackets.put("refine_face_landmarks", processor.getPacketCreator().createBool(true));
+        inputSidePackets.put("smooth_landmarks", processor.getPacketCreator().createBool(false));
         processor.setInputSidePackets(inputSidePackets);
 
         // For each output landmark stream we must assign corresponding callback
